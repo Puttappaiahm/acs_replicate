@@ -1,0 +1,3 @@
+is_global = true
+build_property.RootNamespace = AzureSearchBackupRestoreIndex
+build_property.ProjectDir = C:\llms\index-backup-restore\v11\AzureSearchBackupRestoreIndex\

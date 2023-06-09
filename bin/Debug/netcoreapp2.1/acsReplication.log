@@ -1,0 +1,6 @@
+2023-06-08 10:41:34,418 [1] INFO AzureSearchBackupRestore.Program - Processing Index: wobo-activity,2310941,6/8/2023 10:41:34 AM
+2023-06-08 10:41:41,694 [1] INFO AzureSearchBackupRestore.Program - Documents Created,total,ID: wobo-activity,500,10095859
+2023-06-08 10:41:47,745 [1] INFO AzureSearchBackupRestore.Program - Documents Created,total,ID: wobo-activity,1000,10156767
+2023-06-08 22:12:19,340 [1] INFO AzureSearchBackupRestore.Program - Processing Index: wobo-activity,2314957,6/8/2023 10:12:19 PM
+2023-06-08 22:12:26,640 [1] INFO AzureSearchBackupRestore.Program - Documents Created,total,ID: wobo-activity,500,10095859
+2023-06-08 22:12:32,554 [1] INFO AzureSearchBackupRestore.Program - Documents Created,total,ID: wobo-activity,1000,10156767

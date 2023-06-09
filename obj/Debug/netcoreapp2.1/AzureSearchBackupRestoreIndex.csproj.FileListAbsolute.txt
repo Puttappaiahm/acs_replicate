@@ -1,0 +1,14 @@
+C:\llms\index-backup-restore\v11\AzureSearchBackupRestoreIndex\bin\Debug\netcoreapp2.1\appsettings.json
+C:\llms\index-backup-restore\v11\AzureSearchBackupRestoreIndex\bin\Debug\netcoreapp2.1\AzureSearchBackupRestoreIndex.deps.json
+C:\llms\index-backup-restore\v11\AzureSearchBackupRestoreIndex\bin\Debug\netcoreapp2.1\AzureSearchBackupRestoreIndex.runtimeconfig.json
+C:\llms\index-backup-restore\v11\AzureSearchBackupRestoreIndex\bin\Debug\netcoreapp2.1\AzureSearchBackupRestoreIndex.runtimeconfig.dev.json
+C:\llms\index-backup-restore\v11\AzureSearchBackupRestoreIndex\bin\Debug\netcoreapp2.1\AzureSearchBackupRestoreIndex.dll
+C:\llms\index-backup-restore\v11\AzureSearchBackupRestoreIndex\bin\Debug\netcoreapp2.1\AzureSearchBackupRestoreIndex.pdb
+C:\llms\index-backup-restore\v11\AzureSearchBackupRestoreIndex\obj\Debug\netcoreapp2.1\AzureSearchBackupRestoreIndex.csproj.AssemblyReference.cache
+C:\llms\index-backup-restore\v11\AzureSearchBackupRestoreIndex\obj\Debug\netcoreapp2.1\AzureSearchBackupRestoreIndex.GeneratedMSBuildEditorConfig.editorconfig
+C:\llms\index-backup-restore\v11\AzureSearchBackupRestoreIndex\obj\Debug\netcoreapp2.1\AzureSearchBackupRestoreIndex.AssemblyInfoInputs.cache
+C:\llms\index-backup-restore\v11\AzureSearchBackupRestoreIndex\obj\Debug\netcoreapp2.1\AzureSearchBackupRestoreIndex.AssemblyInfo.cs
+C:\llms\index-backup-restore\v11\AzureSearchBackupRestoreIndex\obj\Debug\netcoreapp2.1\AzureSearchBackupRestoreIndex.csproj.CoreCompileInputs.cache
+C:\llms\index-backup-restore\v11\AzureSearchBackupRestoreIndex\obj\Debug\netcoreapp2.1\AzureSearchBackupRestoreIndex.dll
+C:\llms\index-backup-restore\v11\AzureSearchBackupRestoreIndex\obj\Debug\netcoreapp2.1\AzureSearchBackupRestoreIndex.pdb
+C:\llms\index-backup-restore\v11\AzureSearchBackupRestoreIndex\obj\Debug\netcoreapp2.1\AzureSearchBackupRestoreIndex.genruntimeconfig.cache
