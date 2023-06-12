@@ -1,12 +1,6 @@
-2023-06-12 10:55:22,121 [1] INFO AzureSearchBackupRestore.Program - Processing Index: wobo-customtag,40,6/12/2023 10:55:22 AM
 2023-06-12 10:55:22,144 [1] INFO SummaryLogger - Processing Index: wobo-customtag,40,6/12/2023 10:55:22 AM
-2023-06-12 10:55:26,608 [1] INFO AzureSearchBackupRestore.Program - Documents Created,total,ID: wobo-customtag,40,9
-2023-06-12 10:55:26,609 [1] INFO AzureSearchBackupRestore.Program - **Completed Replicating**,total,ID: wobo-customtag,40,9
 2023-06-12 10:55:26,609 [1] INFO SummaryLogger - **Completed Replicating** wobo-customtag,40,6/12/2023 10:55:26 AM
-2023-06-12 10:55:27,501 [1] INFO AzureSearchBackupRestore.Program - Processing Index: wobo-activity,2315938,6/12/2023 10:55:27 AM
 2023-06-12 10:55:27,501 [1] INFO SummaryLogger - Processing Index: wobo-activity,2315938,6/12/2023 10:55:27 AM
-2023-06-12 10:55:40,224 [1] INFO AzureSearchBackupRestore.Program - Documents Created,total,ID: wobo-activity,500,10095859
-2023-06-12 10:55:50,604 [1] INFO AzureSearchBackupRestore.Program - Documents Created,total,ID: wobo-activity,1000,10156767
 2023-06-12 11:44:27,428 [1] INFO SummaryLogger - ** Starting Summary Process Counts 16 **
 2023-06-12 11:45:01,740 [1] INFO SummaryLogger - Source Index Count: wobo-activity-comment,99141
 2023-06-12 11:45:11,119 [1] INFO SummaryLogger - Target Index Count: wobo-activity-comment,99141

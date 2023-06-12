@@ -24,7 +24,8 @@ namespace AzureSearchBackupRestore
     class Program
     {
         //private static ILog logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private static readonly ILog logger = LogManager.GetLogger(typeof(Program));
+        private static readonly ILog logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog summaryLog = LogManager.GetLogger("SummaryLogger");
         private static string SourceSearchServiceName;
         private static string SourceAdminKey;
         private static string SourceIndexName;
@@ -42,6 +43,7 @@ namespace AzureSearchBackupRestore
         //private static Uri targetServiceUri = new Uri("https://" + TargetSearchServiceName + ".search.windows.net");
         private static HttpClient targetHttpClient = new HttpClient();
         private static Boolean replicateIndexOnly = false;
+        private static Boolean logSummary = false;
 
         private static int MaxBatchSize = 500;          // JSON files will contain this many documents / file and can be up to 1000
         private static int ParallelizedJobs = 2;       // Output content in parallel jobs
@@ -58,6 +60,13 @@ namespace AzureSearchBackupRestore
                 replicateIndex();
                 return;
             }
+            //Log Summary of Indexes
+            if (logSummary)
+            {
+                //Process Summary
+                processSummaryLogs();
+                return;
+            }
             //Backup the source index
             Console.WriteLine("\nSTART INDEX BACKUP");
             //Process configured Indexes
@@ -69,23 +78,23 @@ namespace AzureSearchBackupRestore
 
 
             //Recreate and import content to target index
-            Console.WriteLine("\nSTART INDEX RESTORE");
+            //Console.WriteLine("\nSTART INDEX RESTORE");
             //DeleteIndex();
             //CreateTargetIndex();
             //ImportFromJSON();
-            Console.WriteLine("\r\n  Waiting 10 seconds for target to index content...");
-            Console.WriteLine("  NOTE: For really large indexes it may take longer to index all content.\r\n");
-            Thread.Sleep(10000);
+            //Console.WriteLine("\r\n  Waiting 10 seconds for target to index content...");
+            //Console.WriteLine("  NOTE: For really large indexes it may take longer to index all content.\r\n");
+            //Thread.Sleep(10000);
 
             // Validate all content is in target index
             //int sourceCount = GetCurrentDocCount(SourceSearchClient);
             //int targetCount = GetCurrentDocCount(TargetSearchClient);
-            Console.WriteLine("\nSAFEGUARD CHECK: Source and target index counts should match");
+            //Console.WriteLine("\nSAFEGUARD CHECK: Source and target index counts should match");
             //Console.WriteLine(" Source index contains {0} docs", sourceCount);
             //Console.WriteLine(" Target index contains {0} docs\r\n", targetCount);
 
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadLine();
+            //Console.WriteLine("Press any key to continue...");
+            //Console.ReadLine();
         }
 
         static void ConfigurationSetup()
@@ -101,6 +110,7 @@ namespace AzureSearchBackupRestore
             TargetIndexName = configuration["TargetIndexName"];
             BackupDirectory = configuration["BackupDirectory"];
             replicateIndexOnly = bool.Parse(configuration["ReplicateIndexOnly"]);
+            logSummary = bool.Parse(configuration["LogSummaryOnly"]);
 
             // Take JSON file and import this as-is to target index
 
@@ -110,7 +120,7 @@ namespace AzureSearchBackupRestore
             String indexData = GetIndexSchema("All");
             JObject iData = JObject.Parse(indexData);
             JArray indexes = (JArray)iData.GetValue("value");
-            logger.Info(string.Format("Replicating {0} Indexes", indexes.Count));
+            summaryLog.Info(string.Format("** Replicating {0} Indexes **", indexes.Count));
             foreach (JObject item in indexes)
             {
                 item.Remove("@odata.etag");
@@ -119,10 +129,33 @@ namespace AzureSearchBackupRestore
                 DeleteIndex(indexName);
                 // Create Target Index
                 CreateTargetIndex(item.ToString());
-                logger.Info(string.Format("Created Index {0}", indexName));
+                summaryLog.Info(string.Format("Created Index {0}", indexName));
             }
+            summaryLog.Info(string.Format("** Replicating Indexes Ended **"));
         }
-
+        static void processSummaryLogs()
+        {
+            String indexData = GetIndexSchema("All");
+            JObject iData = JObject.Parse(indexData);
+            JArray indexes = (JArray)iData.GetValue("value");
+            summaryLog.Info(string.Format("** Starting Summary Process Counts {0} **", indexes.Count));
+            SourceIndexClient = new SearchIndexClient(new Uri("https://" + SourceSearchServiceName + ".search.windows.net"), new AzureKeyCredential(SourceAdminKey));
+            TargetIndexClient = new SearchIndexClient(new Uri("https://" + TargetSearchServiceName + ".search.windows.net"), new AzureKeyCredential(TargetAdminKey));
+            foreach (JObject item in indexes)
+            {
+                string indexName = (string)item.GetValue("name");
+                //total documents From the Source index
+                SourceSearchClient = SourceIndexClient.GetSearchClient(indexName);
+                int indexDocCount = GetCurrentDocCount(SourceSearchClient);
+                summaryLog.Info(string.Format("Source Index Count: {0},{1}", indexName, indexDocCount));
+                // Target Index
+                //total documents for the Target index
+                TargetSearchClient = TargetIndexClient.GetSearchClient(indexName);
+                int targetIndexDocCount = GetCurrentDocCount(TargetSearchClient);
+                summaryLog.Info(string.Format("Target Index Count: {0},{1}", indexName, targetIndexDocCount));
+            }
+            summaryLog.Info(string.Format("** Ending Summary Process Counts **"));
+        }   
         static void startReplicateProcess(string indexName)
         {
 
@@ -219,6 +252,8 @@ namespace AzureSearchBackupRestore
             Uri targetIndexUri = new Uri(targetServiceUri, "/indexes/" + indexName + "/docs/index");
             //
             logger.Info(string.Format("Processing Index: {0},{1},{2}", indexName, indexDocCount, DateTime.Now));
+            summaryLog.Info(string.Format("Processing Index: {0},{1},{2}", indexName, indexDocCount, DateTime.Now));
+
             //get first id and last id
             int firstDocId = getDocID(1);
             int docIDLatest = firstDocId;
@@ -284,8 +319,10 @@ namespace AzureSearchBackupRestore
                 }
 
                 logger.Info(string.Format("Documents Created,total,ID: {0},{1},{2}", indexName, totalProcessed, docIDLatest));
-                if (totalProcessed > indexDocCount + numLoops && currentFetch < 100)
+                if (totalProcessed > indexDocCount + numLoops || currentFetch < 100)
                 {
+                    logger.Info(string.Format("**Completed Replicating**,total,ID: {0},{1},{2}", indexName, totalProcessed, docIDLatest));
+                    summaryLog.Info(string.Format("**Completed Replicating** {0},{1},{2}", indexName, totalProcessed, DateTime.Now));
                     break;
                 }
             }
